@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>冒険マップ - 全国47都道府県</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; background: #f0f4f8; color: #333; }
+
+  header {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white; text-align: center; padding: 20px;
+  }
+  header h1 { font-size: 1.6rem; }
+  header p { opacity: 0.8; font-size: 0.9rem; margin-top: 4px; }
+
+  .stats {
+    display: flex; justify-content: center; gap: 24px; padding: 16px;
+    background: white; border-bottom: 1px solid #e2e8f0;
+  }
+  .stat { text-align: center; }
+  .stat .num { font-size: 1.5rem; font-weight: bold; color: #2563eb; }
+  .stat .label { font-size: 0.75rem; color: #64748b; }
+
+  .container { display: flex; max-width: 1200px; margin: 0 auto; padding: 20px; gap: 20px; }
+
+  .map-area { flex: 1; min-width: 0; }
+  .detail-area {
+    width: 340px; flex-shrink: 0;
+    background: white; border-radius: 12px; padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: sticky; top: 20px; max-height: calc(100vh - 40px); overflow-y: auto;
+  }
+
+  .map-container {
+    position: relative; width: 100%; max-width: 520px; margin: 0 auto;
+    aspect-ratio: 520 / 700;
+  }
+
+  .pref {
+    position: absolute; cursor: pointer;
+    font-size: 0.65rem; font-weight: 600;
+    padding: 4px 6px; border-radius: 6px;
+    border: 2px solid transparent;
+    text-align: center; white-space: nowrap;
+    transition: all 0.15s;
+    z-index: 1;
+  }
+  .pref:hover { transform: scale(1.15); z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .pref.active { border-color: #1e40af; transform: scale(1.15); z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+
+  .pref.has-people { background: #22c55e; color: white; }
+  .pref.no-people { background: #e2e8f0; color: #64748b; }
+
+  .legend {
+    display: flex; gap: 16px; justify-content: center; margin-top: 12px; font-size: 0.8rem;
+  }
+  .legend span { display: flex; align-items: center; gap: 4px; }
+  .legend .dot { width: 12px; height: 12px; border-radius: 4px; display: inline-block; }
+
+  .detail-area h2 { font-size: 1.2rem; margin-bottom: 4px; }
+  .detail-area .region-tag {
+    display: inline-block; font-size: 0.7rem; background: #ede9fe; color: #7c3aed;
+    padding: 2px 8px; border-radius: 99px; margin-bottom: 12px;
+  }
+  .detail-area .no-data { color: #94a3b8; font-size: 0.9rem; margin-top: 12px; }
+
+  .person-card {
+    background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 8px;
+    border-left: 4px solid #2563eb;
+  }
+  .person-card .name { font-weight: bold; font-size: 1rem; }
+  .person-card .meta { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
+  .person-card .tag {
+    display: inline-block; font-size: 0.7rem; padding: 2px 8px;
+    border-radius: 99px; margin-top: 6px; font-weight: 600;
+  }
+  .tag-osaru { background: #fef3c7; color: #b45309; }
+  .tag-kousaku { background: #dbeafe; color: #1d4ed8; }
+  .tag-urakata { background: #ede9fe; color: #7c3aed; }
+  .tag-hatsumei { background: #fce7f3; color: #be185d; }
+  .tag-other { background: #e2e8f0; color: #475569; }
+
+  .placeholder {
+    text-align: center; padding: 40px 20px; color: #94a3b8;
+  }
+  .placeholder .arrow { font-size: 2rem; margin-bottom: 8px; }
+
+  /* 属性別の左ボーダー色 */
+  .person-card.attr-osaru { border-left-color: #f59e0b; }
+  .person-card.attr-kousaku { border-left-color: #3b82f6; }
+  .person-card.attr-urakata { border-left-color: #8b5cf6; }
+  .person-card.attr-hatsumei { border-left-color: #ec4899; }
+
+  @media (max-width: 768px) {
+    .container { flex-direction: column; padding: 12px; }
+    .detail-area { width: 100%; position: static; max-height: none; }
+    .map-container { max-width: 100%; }
+    .pref { font-size: 0.55rem; padding: 3px 4px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>冒険マップ</h1>
+  <p>日本全国47都道府県の冒険リスト</p>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="num" id="stat-people">0</div><div class="label">登録人数</div></div>
+  <div class="stat"><div class="num" id="stat-pref">0</div><div class="label">人がいる県</div></div>
+  <div class="stat"><div class="num" id="stat-empty">0</div><div class="label">未登録県</div></div>
+</div>
+
+<div class="container">
+  <div class="map-area">
+    <div class="map-container" id="map"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#22c55e"></span> 人がいる県</span>
+      <span><span class="dot" style="background:#e2e8f0"></span> 未登録</span>
+    </div>
+  </div>
+  <div class="detail-area" id="detail">
+    <div class="placeholder">
+      <div class="arrow">&larr;</div>
+      <p>都道府県をクリックすると<br>詳細が表示されます</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// 冒険データ
+const DATA = {
+  "北海道": { region: "北海道・東北", people: [
+    { name: "うさぽん", purpose: "中学1年生", attribute: "工作", status: "未定" },
+    { name: "えり", purpose: "", attribute: "発明", status: "未定" },
+  ]},
+  "青森県": { region: "北海道・東北", people: [] },
+  "岩手県": { region: "北海道・東北", people: [] },
+  "宮城県": { region: "北海道・東北", people: [] },
+  "秋田県": { region: "北海道・東北", people: [] },
+  "山形県": { region: "北海道・東北", people: [] },
+  "福島県": { region: "北海道・東北", people: [] },
+  "茨城県": { region: "関東", people: [] },
+  "栃木県": { region: "関東", people: [] },
+  "群馬県": { region: "関東", people: [] },
+  "埼玉県": { region: "関東", people: [] },
+  "千葉県": { region: "関東", people: [] },
+  "東京都": { region: "関東", people: [] },
+  "神奈川県": { region: "関東", people: [] },
+  "新潟県": { region: "中部", people: [] },
+  "富山県": { region: "中部", people: [] },
+  "石川県": { region: "中部", people: [
+    { name: "まり", purpose: "同級生", attribute: "おさる", status: "未定" },
+    { name: "ひろ", purpose: "同級生", attribute: "ウラカタ", status: "未定" },
+  ]},
+  "福井県": { region: "中部", people: [
+    { name: "いずみ", purpose: "同級生（敦賀）", attribute: "ウラカタ", status: "未定" },
+  ]},
+  "山梨県": { region: "中部", people: [] },
+  "長野県": { region: "中部", people: [] },
+  "岐阜県": { region: "中部", people: [] },
+  "静岡県": { region: "中部", people: [
+    { name: "銀河", purpose: "WEB", attribute: "おさる", status: "未定" },
+  ]},
+  "愛知県": { region: "中部", people: [
+    { name: "はると", purpose: "", attribute: "工作", status: "未定" },
+  ]},
+  "三重県": { region: "近畿", people: [] },
+  "滋賀県": { region: "近畿", people: [] },
+  "京都府": { region: "近畿", people: [] },
+  "大阪府": { region: "近畿", people: [] },
+  "兵庫県": { region: "近畿", people: [] },
+  "奈良県": { region: "近畿", people: [] },
+  "和歌山県": { region: "近畿", people: [] },
+  "鳥取県": { region: "中国", people: [] },
+  "島根県": { region: "中国", people: [] },
+  "岡山県": { region: "中国", people: [
+    { name: "ゆうすけ", purpose: "写真家", attribute: "おさる", status: "未定" },
+  ]},
+  "広島県": { region: "中国", people: [
+    { name: "碧", purpose: "整体の人", attribute: "おさる", status: "未定" },
+    { name: "なおや", purpose: "", attribute: "おさる", status: "未定" },
+  ]},
+  "山口県": { region: "中国", people: [
+    { name: "りょうや", purpose: "", attribute: "工作", status: "未定" },
+  ]},
+  "徳島県": { region: "四国", people: [] },
+  "香川県": { region: "四国", people: [
+    { name: "ワクワクちゃん", purpose: "", attribute: "工作", status: "未定" },
+  ]},
+  "愛媛県": { region: "四国", people: [] },
+  "高知県": { region: "四国", people: [] },
+  "福岡県": { region: "九州・沖縄", people: [] },
+  "佐賀県": { region: "九州・沖縄", people: [] },
+  "長崎県": { region: "九州・沖縄", people: [] },
+  "熊本県": { region: "九州・沖縄", people: [] },
+  "大分県": { region: "九州・沖縄", people: [] },
+  "宮崎県": { region: "九州・沖縄", people: [
+    { name: "ここな", purpose: "SNS発信", attribute: "おさる", status: "未定" },
+  ]},
+  "鹿児島県": { region: "九州・沖縄", people: [
+    { name: "ゆづき", purpose: "高校生", attribute: "工作", status: "未定" },
+  ]},
+  "沖縄県": { region: "九州・沖縄", people: [
+    { name: "ゆたぼん", purpose: "", attribute: "", status: "未定" },
+    { name: "りょうさん（おもち先生）", purpose: "FP・UTAGE構築", attribute: "おさる", status: "未定" },
+  ]},
+};
+
+// 都道府県の地図上の位置（%指定）
+const POSITIONS = {
+  "北海道":   { x: 76, y: 3 },
+  "青森県":   { x: 72, y: 14 },
+  "岩手県":   { x: 78, y: 19 },
+  "秋田県":   { x: 68, y: 20 },
+  "宮城県":   { x: 76, y: 25 },
+  "山形県":   { x: 66, y: 26 },
+  "福島県":   { x: 70, y: 31 },
+  "新潟県":   { x: 58, y: 30 },
+  "富山県":   { x: 50, y: 34 },
+  "石川県":   { x: 44, y: 32 },
+  "福井県":   { x: 40, y: 38 },
+  "長野県":   { x: 58, y: 38 },
+  "群馬県":   { x: 66, y: 35 },
+  "栃木県":   { x: 73, y: 34 },
+  "茨城県":   { x: 80, y: 37 },
+  "埼玉県":   { x: 72, y: 40 },
+  "東京都":   { x: 74, y: 44 },
+  "千葉県":   { x: 82, y: 43 },
+  "神奈川県": { x: 74, y: 48 },
+  "山梨県":   { x: 64, y: 44 },
+  "静岡県":   { x: 62, y: 50 },
+  "岐阜県":   { x: 50, y: 40 },
+  "愛知県":   { x: 56, y: 47 },
+  "三重県":   { x: 48, y: 50 },
+  "滋賀県":   { x: 42, y: 44 },
+  "京都府":   { x: 36, y: 42 },
+  "奈良県":   { x: 40, y: 50 },
+  "大阪府":   { x: 36, y: 48 },
+  "和歌山県": { x: 34, y: 54 },
+  "兵庫県":   { x: 30, y: 44 },
+  "鳥取県":   { x: 26, y: 38 },
+  "島根県":   { x: 18, y: 40 },
+  "岡山県":   { x: 24, y: 44 },
+  "広島県":   { x: 16, y: 46 },
+  "山口県":   { x: 8, y: 48 },
+  "香川県":   { x: 28, y: 52 },
+  "徳島県":   { x: 34, y: 58 },
+  "愛媛県":   { x: 20, y: 56 },
+  "高知県":   { x: 24, y: 62 },
+  "福岡県":   { x: 6, y: 56 },
+  "佐賀県":   { x: 2, y: 60 },
+  "長崎県":   { x: -4, y: 64 },
+  "大分県":   { x: 12, y: 58 },
+  "熊本県":   { x: 4, y: 66 },
+  "宮崎県":   { x: 14, y: 66 },
+  "鹿児島県": { x: 6, y: 74 },
+  "沖縄県":   { x: 6, y: 88 },
+};
+
+// 地図を描画
+const mapEl = document.getElementById("map");
+for (const [name, pos] of Object.entries(POSITIONS)) {
+  const el = document.createElement("div");
+  el.className = "pref " + (DATA[name].people.length > 0 ? "has-people" : "no-people");
+  el.textContent = name.replace("県", "").replace("府", "").replace("都", "").replace("道", "");
+  if (name === "北海道") el.textContent = "北海道";
+  el.style.left = pos.x + "%";
+  el.style.top = pos.y + "%";
+  el.addEventListener("click", () => showDetail(name, el));
+  mapEl.appendChild(el);
+}
+
+// 統計を更新
+let totalPeople = 0, prefWithPeople = 0;
+for (const d of Object.values(DATA)) {
+  if (d.people.length > 0) { totalPeople += d.people.length; prefWithPeople++; }
+}
+document.getElementById("stat-people").textContent = totalPeople;
+document.getElementById("stat-pref").textContent = prefWithPeople + "/47";
+document.getElementById("stat-empty").textContent = (47 - prefWithPeople);
+
+function getTagClass(attr) {
+  if (attr === "おさる") return "tag-osaru";
+  if (attr === "工作") return "tag-kousaku";
+  if (attr === "ウラカタ") return "tag-urakata";
+  if (attr === "発明") return "tag-hatsumei";
+  return "tag-other";
+}
+
+function getCardClass(attr) {
+  if (attr === "おさる") return "attr-osaru";
+  if (attr === "工作") return "attr-kousaku";
+  if (attr === "ウラカタ") return "attr-urakata";
+  if (attr === "発明") return "attr-hatsumei";
+  return "";
+}
+
+function showDetail(name, el) {
+  // アクティブ状態を更新
+  document.querySelectorAll(".pref.active").forEach(e => e.classList.remove("active"));
+  el.classList.add("active");
+
+  const data = DATA[name];
+  const detailEl = document.getElementById("detail");
+
+  let html = `<h2>${name}</h2>`;
+  html += `<span class="region-tag">${data.region}</span>`;
+
+  if (data.people.length === 0) {
+    html += `<p class="no-data">まだ誰も登録されていません</p>`;
+  } else {
+    for (const p of data.people) {
+      html += `<div class="person-card ${getCardClass(p.attribute)}">`;
+      html += `<div class="name">${p.name}</div>`;
+      if (p.purpose) html += `<div class="meta">${p.purpose}</div>`;
+      if (p.attribute) html += `<span class="tag ${getTagClass(p.attribute)}">${p.attribute}</span>`;
+      html += `</div>`;
+    }
+  }
+
+  detailEl.innerHTML = html;
+}
+</script>
+</body>
+</html>
