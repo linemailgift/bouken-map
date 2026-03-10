@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ちいくじ号 冒険MAP</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 20'%3E%3Crect width='30' height='20' fill='white'/%3E%3Ccircle cx='15' cy='10' r='6' fill='%23BC002D'/%3E%3C/svg%3E">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #7dd3fc; color: #1e293b; min-height: 100vh; }
@@ -329,7 +330,7 @@
       <p>都道府県をクリックすると<br>詳細が表示されます</p>
     </div>
     <div class="attr-legend">
-      <span class="tag tag-osaru">おさる</span>
+      <span class="tag tag-osaru">おさる講座生</span>
       <span class="tag tag-kousaku">工作</span>
       <span class="tag tag-urakata">ウラカタ</span>
       <span class="tag tag-hatsumei">発明</span>
@@ -356,11 +357,13 @@ const DATA = {
   "埼玉県": { region: "関東", code: "11", people: [] },
   "千葉県": { region: "関東", code: "12", people: [] },
   "東京都": { region: "関東", code: "13", people: [] },
-  "神奈川県": { region: "関東", code: "14", people: [] },
+  "神奈川県": { region: "関東", code: "14", people: [
+    { name: "まーしー", purpose: "おさる関係", attribute: "おさる講座生", status: "未定" },
+  ] },
   "新潟県": { region: "中部", code: "15", people: [] },
   "富山県": { region: "中部", code: "16", people: [] },
   "石川県": { region: "中部", code: "17", people: [
-    { name: "まり", purpose: "同級生", attribute: "おさる", status: "未定" },
+    { name: "まり", purpose: "同級生", attribute: "おさる講座生", status: "未定" },
     { name: "ひろ", purpose: "同級生", attribute: "ウラカタ", status: "未定" },
   ] },
   "福井県": { region: "中部", code: "18", people: [
@@ -370,14 +373,16 @@ const DATA = {
   "長野県": { region: "中部", code: "20", people: [] },
   "岐阜県": { region: "中部", code: "21", people: [] },
   "静岡県": { region: "中部", code: "22", people: [
-    { name: "銀河", purpose: "WEB", attribute: "おさる", status: "未定" },
+    { name: "銀河", purpose: "WEB", attribute: "おさる講座生", status: "未定" },
   ] },
   "愛知県": { region: "中部", code: "23", people: [
     { name: "はると", purpose: "", attribute: "工作", status: "未定" },
   ] },
   "三重県": { region: "近畿", code: "24", people: [] },
   "滋賀県": { region: "近畿", code: "25", people: [] },
-  "京都府": { region: "近畿", code: "26", people: [] },
+  "京都府": { region: "近畿", code: "26", people: [
+    { name: "遊学館", purpose: "進学型個別補習塾", attribute: "おさる講座生", status: "未定" },
+  ] },
   "大阪府": { region: "近畿", code: "27", people: [] },
   "兵庫県": { region: "近畿", code: "28", people: [] },
   "奈良県": { region: "近畿", code: "29", people: [] },
@@ -385,11 +390,11 @@ const DATA = {
   "鳥取県": { region: "中国", code: "31", people: [] },
   "島根県": { region: "中国", code: "32", people: [] },
   "岡山県": { region: "中国", code: "33", people: [
-    { name: "ゆうすけ", purpose: "写真家", attribute: "おさる", status: "未定" },
+    { name: "ゆうすけ", purpose: "写真家", attribute: "おさる講座生", status: "未定" },
   ] },
   "広島県": { region: "中国", code: "34", people: [
-    { name: "碧", purpose: "整体の人", attribute: "おさる", status: "未定" },
-    { name: "なおや", purpose: "", attribute: "おさる", status: "未定" },
+    { name: "碧", purpose: "整体の人", attribute: "おさる講座生", status: "未定" },
+    { name: "なおや", purpose: "", attribute: "おさる講座生", status: "未定" },
   ] },
   "山口県": { region: "中国", code: "35", people: [
     { name: "りょうや", purpose: "", attribute: "工作", status: "未定" },
@@ -406,14 +411,14 @@ const DATA = {
   "熊本県": { region: "九州・沖縄", code: "43", people: [] },
   "大分県": { region: "九州・沖縄", code: "44", people: [] },
   "宮崎県": { region: "九州・沖縄", code: "45", people: [
-    { name: "ここな", purpose: "SNS発信", attribute: "おさる", status: "未定" },
+    { name: "ここな", purpose: "SNS発信", attribute: "おさる講座生", status: "未定" },
   ] },
   "鹿児島県": { region: "九州・沖縄", code: "46", people: [
     { name: "ゆづき", purpose: "高校生", attribute: "工作", status: "未定" },
   ] },
   "沖縄県": { region: "九州・沖縄", code: "47", people: [
     { name: "ゆたぼん", purpose: "", attribute: "", status: "未定" },
-    { name: "りょうさん（おもち先生）", purpose: "FP、UTAGE構築", attribute: "おさる", status: "未定" },
+    { name: "りょうさん（おもち先生）", purpose: "FP、UTAGE構築", attribute: "おさる講座生", status: "未定" },
   ] },
 };
 // === DATA_END ===
@@ -449,14 +454,14 @@ document.getElementById("stat-pref").textContent = prefWithPeople + "/47";
 document.getElementById("stat-empty").textContent = (47 - prefWithPeople);
 
 function getTagClass(attr) {
-  if (attr === "おさる") return "tag-osaru";
+  if (attr === "おさる講座生") return "tag-osaru";
   if (attr === "工作") return "tag-kousaku";
   if (attr === "ウラカタ") return "tag-urakata";
   if (attr === "発明") return "tag-hatsumei";
   return "tag-other";
 }
 function getCardClass(attr) {
-  if (attr === "おさる") return "attr-osaru";
+  if (attr === "おさる講座生") return "attr-osaru";
   if (attr === "工作") return "attr-kousaku";
   if (attr === "ウラカタ") return "attr-urakata";
   if (attr === "発明") return "attr-hatsumei";
@@ -478,7 +483,7 @@ function showDetail(name) {
       html += `</div>`;
     }
   }
-  html += `<div class="attr-legend"><span class="tag tag-osaru">おさる</span><span class="tag tag-kousaku">工作</span><span class="tag tag-urakata">ウラカタ</span><span class="tag tag-hatsumei">発明</span></div>`;
+  html += `<div class="attr-legend"><span class="tag tag-osaru">おさる講座生</span><span class="tag tag-kousaku">工作</span><span class="tag tag-urakata">ウラカタ</span><span class="tag tag-hatsumei">発明</span></div>`;
   el.innerHTML = html;
 }
 </script>
