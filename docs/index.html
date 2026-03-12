@@ -426,6 +426,11 @@ document.querySelectorAll(".prefecture").forEach(g => {
     g.classList.add("has-people");
   }
 
+  // Hover: bring to front so borders are fully visible
+  g.addEventListener("mouseenter", () => {
+    g.parentNode.appendChild(g);
+  });
+
   // Click: show detail in side panel (works on both desktop and mobile)
   g.addEventListener("click", (e) => {
     e.preventDefault();
