@@ -27,152 +27,118 @@
     font-family: 'Noto Sans JP', sans-serif;
     background: #f5f4f7;
     color: #333;
-    overflow: hidden;
-    height: 100vh;
+    line-height: 1.8;
   }
 
-  .slide-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-  }
-
-  .slide {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    border-left: 4px solid;
-    border-image: linear-gradient(to bottom, var(--purple-deep), var(--purple-light)) 1;
-    opacity: 0;
-    transform: translateY(-30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .slide.active {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-
-  .slide.theme-gold {
-    border-image: linear-gradient(to bottom, var(--gold), var(--gold-light)) 1;
-  }
-  .slide.theme-red {
-    border-image: linear-gradient(to bottom, var(--red), var(--red-light)) 1;
-  }
-
-  .slide-header {
-    padding: 48px 100px 0;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .slide-body {
-    padding: 20px 100px 60px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(75,0,130,0.15) transparent;
-  }
-  .slide-body::-webkit-scrollbar { width: 4px; }
-  .slide-body::-webkit-scrollbar-thumb { background: rgba(75,0,130,0.15); border-radius: 2px; }
-
-  /* Title slide */
-  .slide.title-slide {
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 100px;
+  /* ===== Header ===== */
+  .page-header {
     background: linear-gradient(135deg, #fff 0%, var(--purple-pale) 50%, var(--gold-pale) 100%);
-    border-image: none;
-    border-left: none;
+    text-align: center;
+    padding: 60px 24px 48px;
+    border-bottom: 3px solid var(--purple-deep);
   }
-  .slide.title-slide .slide-header { padding: 0 100px; }
-
-  /* Background number */
-  .slide-bg-num {
-    position: absolute;
-    right: 60px;
-    bottom: 20px;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16rem;
-    font-weight: 700;
-    color: rgba(75,0,130,0.05);
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
-  }
-  .theme-gold .slide-bg-num { color: rgba(201,169,110,0.07); }
-  .theme-red .slide-bg-num { color: rgba(194,106,90,0.07); }
-
-  .section-num {
+  .page-header .icon { font-size: 3rem; margin-bottom: 12px; }
+  .page-header .label {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.85rem;
     color: var(--purple-mid);
     letter-spacing: 3px;
     text-transform: uppercase;
-    margin-bottom: 8px;
     font-weight: 600;
   }
-  .theme-gold .section-num { color: var(--gold-dark); }
-  .theme-red .section-num { color: var(--red); }
-
-  .slide-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--purple-deep);
-    margin-bottom: 8px;
-  }
-  .theme-gold .slide-title { color: #8B6B2A; }
-  .theme-red .slide-title { color: var(--red-dark); }
-
-  .divider {
-    width: 60px;
-    height: 2px;
+  .page-header .divider {
+    width: 60px; height: 2px;
     background: linear-gradient(to right, var(--purple-deep), var(--purple-light));
-    margin: 12px auto 0;
+    margin: 12px auto 20px;
   }
-  .theme-gold .divider { background: linear-gradient(to right, var(--gold-dark), var(--gold-light)); }
-  .theme-red .divider { background: linear-gradient(to right, var(--red), var(--red-light)); }
-
-  .main-title {
+  .page-header h1 {
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--purple-deep);
-    margin-bottom: 12px;
-    text-align: center;
-    line-height: 1.6;
+    margin-bottom: 8px;
   }
-
-  .main-subtitle {
+  .page-header .subtitle {
     font-size: 0.95rem;
     color: #888;
-    margin-bottom: 24px;
-    text-align: center;
+    margin-bottom: 20px;
   }
-
   .meta-info {
     display: flex;
     gap: 32px;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 16px;
   }
   .meta-item { font-size: 0.82rem; color: #666; }
   .meta-label { color: var(--gold-dark); font-weight: 500; }
 
-  /* Cards */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+  .tag {
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .tag.purple {
+    border: 1px solid var(--purple-light);
+    color: var(--purple-mid);
+    background: var(--purple-pale);
+  }
+  .tag.gold {
+    border: 1px solid var(--gold);
+    color: var(--gold-dark);
+    background: var(--gold-pale);
+  }
+
+  /* ===== Main ===== */
+  .main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ===== Section ===== */
+  .section {
+    margin-top: 40px;
+    border-left: 4px solid;
+    border-image: linear-gradient(to bottom, var(--purple-deep), var(--purple-light)) 1;
+    padding-left: 24px;
+  }
+  .section.theme-gold {
+    border-image: linear-gradient(to bottom, var(--gold), var(--gold-light)) 1;
+  }
+  .section.theme-red {
+    border-image: linear-gradient(to bottom, var(--red), var(--red-light)) 1;
+  }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    color: var(--purple-mid);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .section.theme-gold .section-label { color: var(--gold-dark); }
+  .section.theme-red .section-label { color: var(--red); }
+
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--purple-deep);
+    margin-bottom: 4px;
+  }
+  .section.theme-gold .section-title { color: #8B6B2A; }
+  .section.theme-red .section-title { color: var(--red-dark); }
+
+  .section-divider {
+    width: 40px; height: 2px;
+    background: linear-gradient(to right, var(--purple-deep), var(--purple-light));
+    margin: 8px 0 16px;
+  }
+  .section.theme-gold .section-divider { background: linear-gradient(to right, var(--gold-dark), var(--gold-light)); }
+  .section.theme-red .section-divider { background: linear-gradient(to right, var(--red), var(--red-light)); }
+
+  /* ===== Cards ===== */
   .card {
     background: #fafafc;
     border: 1px solid #ece8f0;
@@ -180,8 +146,6 @@
     border-radius: 6px;
     padding: 20px 24px;
     margin-bottom: 14px;
-    width: 100%;
-    max-width: 700px;
   }
   .card-title {
     font-size: 0.9rem;
@@ -207,14 +171,12 @@
   }
   .card.c-red .card-title { color: var(--red-dark); }
 
-  /* Highlights */
+  /* ===== Highlight ===== */
   .highlight {
     background: var(--purple-pale);
     border-left: 3px solid var(--purple-mid);
     padding: 14px 20px;
     margin-bottom: 14px;
-    width: 100%;
-    max-width: 700px;
     border-radius: 0 6px 6px 0;
   }
   .highlight p { font-size: 0.82rem; line-height: 1.8; color: #555; }
@@ -232,28 +194,31 @@
   }
   .highlight.hl-red strong { color: var(--red-dark); }
 
-  /* Tags */
-  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-  .tag {
-    font-size: 0.72rem;
-    padding: 4px 12px;
-    border-radius: 20px;
-  }
-  .tag.purple {
-    border: 1px solid var(--purple-light);
-    color: var(--purple-mid);
-    background: var(--purple-pale);
-  }
-  .tag.gold {
-    border: 1px solid var(--gold);
-    color: var(--gold-dark);
-    background: var(--gold-pale);
+  /* ===== Number badge ===== */
+  .num-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--purple-mid);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-right: 8px;
+    flex-shrink: 0;
   }
 
-  /* Table */
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .activity-item .card { flex: 1; margin-bottom: 0; }
+
+  /* ===== Table ===== */
   .table-wrap {
-    width: 100%;
-    max-width: 700px;
     overflow-x: auto;
     margin-bottom: 14px;
   }
@@ -274,376 +239,243 @@
     line-height: 1.6;
   }
 
-  /* Grid layout for cards */
+  /* ===== Card grid ===== */
   .card-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
-    width: 100%;
-    max-width: 700px;
     margin-bottom: 14px;
   }
   .card-grid .card { margin-bottom: 0; }
 
-  /* Number badge */
-  .num-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: var(--purple-mid);
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 700;
-    margin-right: 8px;
-    flex-shrink: 0;
-  }
-  .theme-gold .num-badge { background: var(--gold-dark); }
-  .theme-red .num-badge { background: var(--red); }
-
-  .activity-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 4px;
-    margin-bottom: 8px;
-  }
-  .activity-item .card { flex: 1; margin-bottom: 0; }
-
-  /* Nav */
-  .nav {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    display: flex;
-    gap: 8px;
-    z-index: 100;
-  }
-  .nav button {
-    width: 28px; height: 28px;
-    border: 1px solid #ddd;
-    background: #fff;
-    border-radius: 50%;
+  /* ===== Footer ===== */
+  .page-footer {
+    text-align: center;
+    padding: 32px 24px;
     font-size: 0.7rem;
-    color: #999;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-  .nav button:hover {
-    border-color: var(--purple-mid);
-    color: var(--purple-mid);
-    background: var(--purple-pale);
-  }
-
-  .page-indicator {
-    position: fixed;
-    bottom: 28px;
-    left: 24px;
-    font-size: 0.7rem;
-    color: #ccc;
-    font-family: 'Cormorant Garamond', serif;
-    z-index: 100;
-  }
-
-  .footer {
-    position: fixed;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.65rem;
     color: var(--purple-light);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    border-top: 1px solid #ece8f0;
+  }
+
+  /* ===== Closing ===== */
+  .closing {
+    text-align: center;
+    margin-top: 24px;
+    color: #888;
+    font-size: 0.9rem;
+    line-height: 2;
+  }
+  .closing .name {
+    color: var(--purple-mid);
+    font-weight: 600;
   }
 
   @media (max-width: 768px) {
-    .slide-header { padding: 32px 24px 0; }
-    .slide-body { padding: 16px 24px 60px; }
-    .slide.title-slide .slide-header { padding: 0 24px; }
-    .main-title { font-size: 1.4rem; }
+    .page-header { padding: 40px 16px 32px; }
+    .page-header h1 { font-size: 1.4rem; }
+    .main { padding: 0 16px 60px; }
+    .section { padding-left: 16px; }
     .card-grid { grid-template-columns: 1fr; }
-    .slide-bg-num { font-size: 8rem; right: 20px; }
   }
 </style>
 </head>
 <body>
 
-<div class="slide-container">
+<!-- ===== ヘッダー ===== -->
+<div class="page-header">
+  <div class="icon">🚐</div>
+  <div class="label">Project Proposal</div>
+  <div class="divider"></div>
+  <h1>冒険プロジェクト</h1>
+  <div class="subtitle">ゆたぼん号で全国47都道府県を旅する企画提案</div>
+  <div class="meta-info">
+    <span class="meta-item"><span class="meta-label">提案者</span>　ちいくじ</span>
+    <span class="meta-item"><span class="meta-label">宛先</span>　おさるさん</span>
+  </div>
+  <div class="tags">
+    <span class="tag purple">全国ツアー</span>
+    <span class="tag purple">工作ワークショップ</span>
+    <span class="tag purple">車体広告</span>
+    <span class="tag purple">おさる講座生対談</span>
+  </div>
+</div>
 
-  <!-- ========== 紫：タイトル ========== -->
-  <div class="slide title-slide active" data-slide="0">
-    <div class="slide-header">
-      <div style="font-size: 3rem; margin-bottom: 12px;">🚐</div>
-      <div class="section-num">Project Proposal</div>
-      <div class="divider" style="margin-bottom: 24px;"></div>
-      <div class="main-title">冒険プロジェクト</div>
-      <div class="main-subtitle">ゆたぼん号で全国47都道府県を旅する企画提案</div>
-      <div class="meta-info">
-        <span class="meta-item"><span class="meta-label">提案者</span>　ちいくじ</span>
-        <span class="meta-item"><span class="meta-label">宛先</span>　おさるさん</span>
-      </div>
-      <div class="tags" style="margin-top: 20px;">
-        <span class="tag purple">全国ツアー</span>
-        <span class="tag purple">工作ワークショップ</span>
-        <span class="tag purple">車体広告</span>
-        <span class="tag purple">おさる講座生対談</span>
-      </div>
+<div class="main">
+
+  <!-- ===== 紫：ゆたぼん号とは ===== -->
+  <div class="section">
+    <div class="section-label">Section 01</div>
+    <div class="section-title">ゆたぼん号とは</div>
+    <div class="section-divider"></div>
+
+    <div class="highlight">
+      <p>ゆたぼん（ゆたぼんスタディー号）は、不登校の子供たちに勇気を与えるために日本全国を回った。キャッチフレーズは<strong>「人生は冒険だ」</strong>。</p>
+    </div>
+    <div class="card">
+      <div class="card-title">ゆたぼんが伝えたメッセージ</div>
+      <ul>
+        <li>「学校に行きたければ行けばいい。行きたくなければ行かなくてもいい」</li>
+        <li>子供たちに新しい世界観を示した</li>
+        <li>当時バッシングされたが、今では人気者に</li>
+        <li><strong>子供たち、そして子供を持つ親に勇気を与えた存在</strong></li>
+      </ul>
+    </div>
+    <div class="highlight">
+      <p>その<strong>ゆたぼん号をちいくじが引き継ぎ</strong>、沖縄から出発して全国47都道府県を旅する。</p>
     </div>
   </div>
 
-  <!-- ========== 紫：ゆたぼん号の背景 ========== -->
-  <div class="slide" data-slide="1">
-    <div class="slide-bg-num">01</div>
-    <div class="slide-header">
-      <div class="section-num">Section 01</div>
-      <div class="slide-title">ゆたぼん号とは</div>
-      <div class="divider"></div>
-    </div>
-    <div class="slide-body">
-      <div class="highlight">
-        <p>ゆたぼん（ゆたぼんスタディー号）は、不登校の子供たちに勇気を与えるために日本全国を回った。<br>キャッチフレーズは<strong>「人生は冒険だ」</strong>。</p>
-      </div>
+  <!-- ===== 紫：全国でやる3つのこと ===== -->
+  <div class="section">
+    <div class="section-label">Section 02</div>
+    <div class="section-title">ちいくじが全国でやる3つのこと</div>
+    <div class="section-divider"></div>
+
+    <div class="activity-item">
+      <span class="num-badge">1</span>
       <div class="card">
-        <div class="card-title">ゆたぼんが伝えたメッセージ</div>
+        <div class="card-title">工作ワークショップ（子供向け）</div>
         <ul>
-          <li>「学校に行きたければ行けばいい。行きたくなければ行かなくてもいい」</li>
-          <li>子供たちに新しい世界観を示した</li>
-          <li>当時バッシングされたが、今では人気者に</li>
-          <li><strong>子供たち、そして子供を持つ親に勇気を与えた存在</strong></li>
+          <li>全国の子供たちに工作をやりに会いに行く</li>
+          <li>学校や会場を借りてワークショップを開催</li>
+          <li>工作の認知度UP・ちいくじの露出度UP</li>
         </ul>
       </div>
-      <div class="highlight">
-        <p>その<strong>ゆたぼん号をちいくじが引き継ぎ</strong>、沖縄から出発して全国47都道府県を旅する。</p>
+    </div>
+    <div class="activity-item">
+      <span class="num-badge">2</span>
+      <div class="card">
+        <div class="card-title">SNSマーケティング出張コンサル（大人向け）</div>
+        <ul>
+          <li>会社を辞めたい人・副業したい人・学校を辞めたい職員など、いろんな方がいる</li>
+          <li>SNSマーケティングで起業・副業できることを現地で直接伝える</li>
+          <li>対面でパソコンを触りながら一対一でお話しする出張コンサル</li>
+        </ul>
+      </div>
+    </div>
+    <div class="activity-item">
+      <span class="num-badge">3</span>
+      <div class="card">
+        <div class="card-title">おさる講座生との対談（発信コンテンツ）</div>
+        <ul>
+          <li>全国各地のおさる講座生に直接会いに行って対談する</li>
+          <li>その方の成功事例を発信コンテンツとして出す</li>
+          <li>「会社辞めたいけど迷っている人たち」の勇気になる</li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <!-- ========== 紫：全国でやる3つのこと ========== -->
-  <div class="slide" data-slide="2">
-    <div class="slide-bg-num">02</div>
-    <div class="slide-header">
-      <div class="section-num">Section 02</div>
-      <div class="slide-title">ちいくじが全国でやる3つのこと</div>
-      <div class="divider"></div>
+  <!-- ===== 金：車体広告モデル ===== -->
+  <div class="section theme-gold">
+    <div class="section-label">Section 03</div>
+    <div class="section-title">車体広告モデル</div>
+    <div class="section-divider"></div>
+
+    <div class="highlight hl-gold">
+      <p>ゆたぼん号の車体に広告枠を設置し、<strong>全国47都道府県を走りながら自然な露出</strong>を実現する。</p>
     </div>
-    <div class="slide-body">
-      <div class="activity-item">
-        <span class="num-badge">1</span>
-        <div class="card" style="margin-bottom:0;">
-          <div class="card-title">工作ワークショップ（子供向け）</div>
-          <ul>
-            <li>全国の子供たちに工作をやりに会いに行く</li>
-            <li>学校や会場でワークショップを開催</li>
-            <li>工作の認知度UP・ちいくじの露出度UP</li>
-          </ul>
-        </div>
-      </div>
-      <div class="activity-item">
-        <span class="num-badge">2</span>
-        <div class="card" style="margin-bottom:0;">
-          <div class="card-title">SNSマーケティング出張コンサル（大人向け）</div>
-          <ul>
-            <li>会社を辞めたい人・副業したい人にSNSマーケで起業・副業できることを伝える</li>
-            <li>現地で対面・パソコンを触りながら一対一でお話し</li>
-            <li>出張マーケティングコンサルとして全国を回る</li>
-          </ul>
-        </div>
-      </div>
-      <div class="activity-item">
-        <span class="num-badge">3</span>
-        <div class="card" style="margin-bottom:0;">
-          <div class="card-title">おさる講座生との対談（発信）</div>
-          <ul>
-            <li>全国各地のおさる講座生に直接会いに行く</li>
-            <li>対談して成功事例を発信</li>
-            <li>「会社辞めたいけど迷っている人たち」の勇気になるコンテンツに</li>
-          </ul>
-        </div>
-      </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>広告枠</th>
+            <th>状況</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>おさるさん</strong></td>
+            <td><span class="tag gold">ご提案中</span></td>
+          </tr>
+          <tr>
+            <td><strong>いずみゆうさん</strong>（UTAGE開発者）</td>
+            <td><span style="color:#27ae60; font-weight:700;">✅ 承認済み</span></td>
+          </tr>
+          <tr>
+            <td>その他協賛者</td>
+            <td>募集中</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <!-- ========== 金：車体広告モデル ========== -->
-  <div class="slide theme-gold" data-slide="3">
-    <div class="slide-bg-num">03</div>
-    <div class="slide-header">
-      <div class="section-num">Section 03</div>
-      <div class="slide-title">車体広告モデル</div>
-      <div class="divider"></div>
+  <!-- ===== 金：全国ネットワーク ===== -->
+  <div class="section theme-gold">
+    <div class="section-label">Section 04</div>
+    <div class="section-title">全国ネットワーク</div>
+    <div class="section-divider"></div>
+
+    <div class="card c-gold">
+      <div class="card-title">おさる講座生（9名）</div>
+      <p>まーしー（神奈川）、まり（石川）、銀河（静岡）、遊学館（京都）、ゆうすけ（岡山）、碧（広島）、なおや（広島）、ここな（宮崎）、りょうさん（沖縄）</p>
     </div>
-    <div class="slide-body">
-      <div class="highlight hl-gold">
-        <p>ゆたぼん号の車体に広告枠を設置し、<strong>全国47都道府県を走りながら自然な露出</strong>を実現する。</p>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>広告枠</th>
-              <th>状況</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>おさるさん</strong></td>
-              <td><span class="tag gold">ご提案中</span></td>
-            </tr>
-            <tr>
-              <td><strong>いずみゆうさん</strong>（UTAGE開発者）</td>
-              <td><span style="color:#27ae60; font-weight:700;">✅ 承認済み</span></td>
-            </tr>
-            <tr>
-              <td>その他協賛者</td>
-              <td>募集中</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="card-grid">
+      <div class="card c-gold">
+        <div class="card-title">ウラカタマッチングサロン（3名）</div>
+        <p>手塚さん（千葉）、ひろ（石川）、いずみ（福井）</p>
       </div>
       <div class="card c-gold">
-        <div class="card-title">広告効果</div>
-        <ul>
-          <li>全国47都道府県を走行 → 各地で自然な露出</li>
-          <li>ワークショップ会場・対談先での駐車中も広告効果</li>
-          <li>SNS発信と連動 → オンラインでも拡散</li>
-        </ul>
+        <div class="card-title">工作関連（5名）</div>
+        <p>うさぽん（北海道）、はると（愛知）、りょうや（山口）、ワクワクちゃん（香川）、ゆづき（鹿児島）</p>
       </div>
+    </div>
+    <div class="highlight hl-gold">
+      <p><strong>おさる講座生に直接会いに行ける旅。</strong>コミュニティの絆をリアルに深める機会になる。</p>
     </div>
   </div>
 
-  <!-- ========== 金：全国ネットワーク ========== -->
-  <div class="slide theme-gold" data-slide="4">
-    <div class="slide-bg-num">04</div>
-    <div class="slide-header">
-      <div class="section-num">Section 03</div>
-      <div class="slide-title">全国ネットワーク</div>
-      <div class="divider"></div>
+  <!-- ===== 赤：おさるさんへのメリット ===== -->
+  <div class="section theme-red">
+    <div class="section-label">Section 05</div>
+    <div class="section-title">おさるさんへのメリット</div>
+    <div class="section-divider"></div>
+
+    <div class="card c-red">
+      <div class="card-title">集客への貢献</div>
+      <ul>
+        <li>副業・起業しようとしている人たちに「こういう講座があるよ」と全国で直接伝えられる</li>
+        <li>おさる講座生との対談コンテンツが新規の集客に貢献</li>
+        <li>わずかながらでもおさるさんの集客の力になれると思っている</li>
+      </ul>
     </div>
-    <div class="slide-body">
-      <div class="card c-gold">
-        <div class="card-title">おさる講座生（9名）</div>
-        <p>まーしー（神奈川）、まり（石川）、銀河（静岡）、遊学館（京都）、ゆうすけ（岡山）、碧（広島）、なおや（広島）、ここな（宮崎）、りょうさん（沖縄）</p>
-      </div>
-      <div class="card-grid">
-        <div class="card c-gold">
-          <div class="card-title">ウラカタマッチングサロン（3名）</div>
-          <p>手塚さん（千葉）、ひろ（石川）、いずみ（福井）</p>
-        </div>
-        <div class="card c-gold">
-          <div class="card-title">工作関連（5名）</div>
-          <p>うさぽん（北海道）、はると（愛知）、りょうや（山口）、ワクワクちゃん（香川）、ゆづき（鹿児島）</p>
-        </div>
-      </div>
-      <div class="highlight hl-gold">
-        <p><strong>おさる講座生に直接会いに行ける旅。</strong>コミュニティの絆をリアルに深める機会になる。</p>
-      </div>
+    <div class="card c-red">
+      <div class="card-title">コミュニティ強化</div>
+      <ul>
+        <li>全国の講座生に直接会いに行くことで一体感が生まれる</li>
+        <li>対談動画がコミュニティ全体のモチベーションUPに</li>
+      </ul>
     </div>
   </div>
 
-  <!-- ========== 赤→金：おさるさんへのメリット ========== -->
-  <div class="slide theme-red" data-slide="5">
-    <div class="slide-bg-num">05</div>
-    <div class="slide-header">
-      <div class="section-num">Section 04</div>
-      <div class="slide-title">おさるさんへのメリット</div>
-      <div class="divider"></div>
-    </div>
-    <div class="slide-body">
-      <div class="card c-red">
-        <div class="card-title">集客への貢献</div>
-        <ul>
-          <li>副業・起業を目指す人たちに「おさる講座」という選択肢を全国で直接伝えられる</li>
-          <li>おさる講座生との対談コンテンツが新規集客に貢献</li>
-          <li>わずかながらでもおさるさんの集客の力になれる</li>
-        </ul>
-      </div>
-      <div class="card c-red">
-        <div class="card-title">コミュニティ強化</div>
-        <ul>
-          <li>全国の講座生に直接会いに行くことで一体感が生まれる</li>
-          <li>対談動画がコミュニティ全体のモチベーションUPに</li>
-          <li>「おさるさんの講座生がこんなに全国にいる」という可視化</li>
-        </ul>
-      </div>
-      <div class="card c-red">
-        <div class="card-title">広告効果</div>
-        <ul>
-          <li>車体広告が全国を走り、自然な形でおさるさんの認知を広げる</li>
-          <li>いずみゆうさん（UTAGE）と並んで掲載 → 相乗効果</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <!-- ===== 紫：クロージング ===== -->
+  <div class="section">
+    <div class="section-label">Closing</div>
+    <div class="section-title">ご提案</div>
+    <div class="section-divider"></div>
 
-  <!-- ========== 紫：クロージング ========== -->
-  <div class="slide" data-slide="6">
-    <div class="slide-bg-num">06</div>
-    <div class="slide-header">
-      <div class="section-num">Closing</div>
-      <div class="slide-title">ご提案</div>
-      <div class="divider"></div>
+    <div class="highlight">
+      <p><strong>いずみゆうさんは承認済み。</strong>おさるさんのご参加で企画が完成します。</p>
     </div>
-    <div class="slide-body">
-      <div class="highlight">
-        <p><strong>いずみゆうさんは承認済み。</strong><br>おさるさんのご参加で企画が完成します。</p>
-      </div>
-      <div class="card">
-        <div class="card-title">お願いしたいこと</div>
-        <ul>
-          <li>ゆたぼん号の車体への<strong>広告枠掲載</strong>のご承認</li>
-          <li>おさる講座生との対談・交流への<strong>ご協力</strong></li>
-        </ul>
-      </div>
-      <div style="text-align:center; margin-top:24px; color:#888; font-size:0.9rem; line-height:2;">
-        ご検討のほど<br>よろしくお願いいたします<br><br>
-        <span style="color:var(--purple-mid); font-weight:600;">ちいくじ</span>
-      </div>
+    <div class="card">
+      <div class="card-title">お願いしたいこと</div>
+      <ul>
+        <li>ゆたぼん号の車体への<strong>広告枠掲載</strong>のご承認</li>
+        <li>おさる講座生との対談・交流への<strong>ご協力</strong></li>
+      </ul>
+    </div>
+    <div class="closing">
+      ご検討のほど<br>よろしくお願いいたします<br><br>
+      <span class="name">ちいくじ</span>
     </div>
   </div>
 
 </div>
 
-<!-- ナビゲーション -->
-<div class="nav">
-  <button onclick="changeSlide(-1)">&#9664;</button>
-  <button onclick="changeSlide(1)">&#9654;</button>
-</div>
-<div class="page-indicator" id="pageIndicator">1 / 7</div>
-<div class="footer">
+<div class="page-footer">
   🚐 冒険プロジェクト 2026
 </div>
-
-<script>
-  let currentSlide = 0;
-  const slides = document.querySelectorAll('.slide');
-  const totalSlides = slides.length;
-
-  function showSlide(index) {
-    slides.forEach((s, i) => { s.classList.toggle('active', i === index); });
-    document.getElementById('pageIndicator').textContent = (index + 1) + ' / ' + totalSlides;
-  }
-
-  function changeSlide(dir) {
-    currentSlide = Math.max(0, Math.min(totalSlides - 1, currentSlide + dir));
-    showSlide(currentSlide);
-  }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
-  });
-
-  let touchStartX = 0;
-  document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; });
-  document.addEventListener('touchend', function(e) {
-    const diff = touchStartX - e.changedTouches[0].screenX;
-    if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
-  });
-</script>
 
 </body>
 </html>
