@@ -3,594 +3,646 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>冒険プロジェクト 提案スライド</title>
+<title>冒険プロジェクト 企画提案 - おさるさん向け</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 100%; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif; }
 
-  /* Slide container */
-  .slides { width: 100%; height: 100%; position: relative; }
+  :root {
+    --purple-deep: #4B0082;
+    --purple-mid: #6B3FA0;
+    --purple-light: #8B6DB5;
+    --purple-pale: #f3eef8;
+    --gold: #c9a96e;
+    --gold-dark: #b8942e;
+    --gold-light: #e8d5a3;
+    --gold-pale: #faf8f3;
+    --red: #c26a5a;
+    --red-dark: #a8524a;
+    --red-light: #e8a090;
+    --red-pale: #fdf3f1;
+  }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #f5f4f7;
+    color: #333;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  .slide-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+
   .slide {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    padding: 60px 80px;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.5s ease;
-  }
-  .slide.active { opacity: 1; pointer-events: auto; }
-
-  /* Color themes */
-  .theme-purple {
-    background: linear-gradient(135deg, #1a0533 0%, #2d1b69 40%, #4a2c8a 100%);
-    color: #fff;
-  }
-  .theme-gold {
-    background: linear-gradient(135deg, #1a0533 0%, #2d1b69 30%, #4a2c8a 60%, #6b3fa0 100%);
-    color: #fff;
-  }
-  .theme-red {
-    background: linear-gradient(135deg, #2d0a0a 0%, #5c1a1a 40%, #8b2525 100%);
-    color: #fff;
-  }
-  .theme-closing {
-    background: linear-gradient(135deg, #1a0533 0%, #2d1b69 50%, #4a2c8a 100%);
-    color: #fff;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-left: 4px solid;
+    border-image: linear-gradient(to bottom, var(--purple-deep), var(--purple-light)) 1;
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
-  /* Left border accent */
-  .slide::before {
-    content: '';
-    position: absolute; left: 0; top: 0; width: 6px; height: 100%;
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
-  .theme-purple::before { background: linear-gradient(to bottom, #9b59b6, #d4a017, #9b59b6); }
-  .theme-gold::before { background: linear-gradient(to bottom, #d4a017, #f5c842, #d4a017); }
-  .theme-red::before { background: linear-gradient(to bottom, #c0392b, #d4a017, #c0392b); }
-  .theme-closing::before { background: linear-gradient(to bottom, #9b59b6, #d4a017, #9b59b6); }
 
-  /* Typography */
-  .slide-number {
-    position: absolute; top: 24px; right: 36px;
-    font-size: 0.8rem; opacity: 0.4; font-weight: 600;
+  .slide.theme-gold {
+    border-image: linear-gradient(to bottom, var(--gold), var(--gold-light)) 1;
   }
-  .slide h1 { font-size: 3rem; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 16px; text-align: center; }
-  .slide h2 { font-size: 2rem; font-weight: 700; margin-bottom: 28px; text-align: center; }
-  .slide h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 12px; }
-  .slide p { font-size: 1.1rem; line-height: 1.8; max-width: 800px; text-align: center; }
+  .slide.theme-red {
+    border-image: linear-gradient(to bottom, var(--red), var(--red-light)) 1;
+  }
 
-  /* Gold accent text */
-  .gold { color: #f5c842; }
-  .gold-border { border-color: #f5c842 !important; }
+  .slide-header {
+    padding: 48px 100px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .slide-body {
+    padding: 20px 100px 60px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(75,0,130,0.15) transparent;
+  }
+  .slide-body::-webkit-scrollbar { width: 4px; }
+  .slide-body::-webkit-scrollbar-thumb { background: rgba(75,0,130,0.15); border-radius: 2px; }
 
   /* Title slide */
-  .title-icon { font-size: 5rem; margin-bottom: 20px; }
-  .subtitle { font-size: 1.3rem; opacity: 0.8; margin-top: 8px; letter-spacing: 0.08em; }
-  .presented-to {
-    margin-top: 40px; padding: 12px 32px;
-    border: 2px solid rgba(245, 200, 66, 0.5); border-radius: 8px;
-    font-size: 1.1rem; color: #f5c842;
+  .slide.title-slide {
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 100px;
+    background: linear-gradient(135deg, #fff 0%, var(--purple-pale) 50%, var(--gold-pale) 100%);
+    border-image: none;
+    border-left: none;
   }
+  .slide.title-slide .slide-header { padding: 0 100px; }
 
-  /* Concept cards */
-  .concept-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
-    max-width: 900px; width: 100%; margin-top: 20px;
+  /* Background number */
+  .slide-bg-num {
+    position: absolute;
+    right: 60px;
+    bottom: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16rem;
+    font-weight: 700;
+    color: rgba(75,0,130,0.05);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
   }
-  .concept-card {
-    background: rgba(255,255,255,0.08); border-radius: 16px; padding: 28px 20px;
-    text-align: center; border: 1px solid rgba(255,255,255,0.12);
-    backdrop-filter: blur(10px);
-  }
-  .concept-card .icon { font-size: 2.5rem; margin-bottom: 12px; }
-  .concept-card h3 { font-size: 1rem; color: #f5c842; margin-bottom: 8px; }
-  .concept-card p { font-size: 0.9rem; opacity: 0.85; text-align: center; line-height: 1.6; }
+  .theme-gold .slide-bg-num { color: rgba(201,169,110,0.07); }
+  .theme-red .slide-bg-num { color: rgba(194,106,90,0.07); }
 
-  /* Cast cards */
-  .cast-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;
-    max-width: 700px; width: 100%; margin-top: 20px;
-  }
-  .cast-card {
-    background: rgba(255,255,255,0.08); border-radius: 16px; padding: 32px 24px;
-    text-align: center; border: 1px solid rgba(255,255,255,0.12);
-  }
-  .cast-card .avatar { font-size: 3rem; margin-bottom: 12px; }
-  .cast-card .name { font-size: 1.4rem; font-weight: 700; color: #f5c842; margin-bottom: 4px; }
-  .cast-card .role { font-size: 0.95rem; opacity: 0.8; margin-bottom: 8px; }
-  .cast-card .desc { font-size: 0.85rem; opacity: 0.7; line-height: 1.6; }
-
-  /* Ad model */
-  .ad-layout {
-    display: flex; gap: 40px; max-width: 900px; width: 100%; align-items: center; margin-top: 16px;
-  }
-  .van-visual {
-    flex-shrink: 0; width: 280px; height: 180px;
-    background: rgba(255,255,255,0.06); border-radius: 16px;
-    border: 2px solid rgba(245,200,66,0.3);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-  }
-  .van-visual .van-icon { font-size: 4rem; }
-  .van-visual .ad-labels {
-    display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; justify-content: center;
-  }
-  .van-visual .ad-label {
-    font-size: 0.7rem; padding: 3px 10px; border-radius: 99px;
+  .section-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--purple-mid);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
     font-weight: 600;
   }
-  .ad-label.osaru { background: #f5c842; color: #1a0533; }
-  .ad-label.utage { background: #c0392b; color: #fff; }
-  .ad-label.other { background: rgba(255,255,255,0.2); color: #fff; }
+  .theme-gold .section-num { color: var(--gold-dark); }
+  .theme-red .section-num { color: var(--red); }
 
-  .ad-points { flex: 1; }
-  .ad-point {
-    display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;
+  .slide-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--purple-deep);
+    margin-bottom: 8px;
   }
-  .ad-point .bullet {
-    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-    background: rgba(245,200,66,0.2); border: 1px solid #f5c842;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem; color: #f5c842; font-weight: 700;
-  }
-  .ad-point .text { font-size: 1rem; line-height: 1.6; }
-  .ad-point .text strong { color: #f5c842; }
+  .theme-gold .slide-title { color: #8B6B2A; }
+  .theme-red .slide-title { color: var(--red-dark); }
 
-  /* Japan map slide */
-  .map-container {
-    display: flex; gap: 36px; max-width: 950px; width: 100%; align-items: flex-start; margin-top: 12px;
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(to right, var(--purple-deep), var(--purple-light));
+    margin: 12px auto 0;
   }
-  .map-svg-wrap {
-    flex: 1; min-width: 0;
-  }
-  .map-svg-wrap svg {
-    width: 100%; height: auto;
-  }
-  .map-stats {
-    width: 280px; flex-shrink: 0;
-  }
-  .stat-group {
-    background: rgba(255,255,255,0.08); border-radius: 12px; padding: 16px;
-    margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1);
-  }
-  .stat-group h4 {
-    font-size: 0.85rem; color: #f5c842; margin-bottom: 8px; font-weight: 600;
-  }
-  .stat-group .count {
-    font-size: 2rem; font-weight: 800; color: #f5c842;
-  }
-  .stat-group .count span { font-size: 1rem; opacity: 0.6; }
-  .stat-group .names {
-    font-size: 0.8rem; opacity: 0.7; margin-top: 6px; line-height: 1.5;
+  .theme-gold .divider { background: linear-gradient(to right, var(--gold-dark), var(--gold-light)); }
+  .theme-red .divider { background: linear-gradient(to right, var(--red), var(--red-light)); }
+
+  .main-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--purple-deep);
+    margin-bottom: 12px;
+    text-align: center;
+    line-height: 1.6;
   }
 
-  .map-legend {
-    display: flex; gap: 16px; margin-top: 8px;
-  }
-  .map-legend-item {
-    display: flex; align-items: center; gap: 6px; font-size: 0.75rem; opacity: 0.7;
-  }
-  .map-legend-dot {
-    width: 12px; height: 12px; border-radius: 3px;
-  }
-
-  /* Approval badge */
-  .approval-card {
-    background: rgba(255,255,255,0.08); border-radius: 20px; padding: 40px 48px;
-    border: 2px solid rgba(245,200,66,0.3);
-    text-align: center; max-width: 600px;
-  }
-  .approval-badge {
-    display: inline-block; padding: 8px 24px;
-    background: linear-gradient(135deg, #27ae60, #2ecc71);
-    border-radius: 99px; font-size: 1rem; font-weight: 700;
-    margin-bottom: 20px; letter-spacing: 0.1em;
-  }
-  .approval-card .person { font-size: 1.3rem; font-weight: 700; color: #f5c842; margin-bottom: 8px; }
-  .approval-card .role-desc { font-size: 1rem; opacity: 0.8; margin-bottom: 16px; }
-  .approval-card .quote {
-    font-size: 0.95rem; opacity: 0.7; font-style: italic;
-    border-left: 3px solid #f5c842; padding-left: 16px; text-align: left;
-    line-height: 1.7;
-  }
-
-  /* Proposal slide */
-  .proposal-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
-    max-width: 900px; width: 100%; margin-top: 20px;
-  }
-  .proposal-card {
-    background: rgba(255,255,255,0.08); border-radius: 16px; padding: 28px 20px;
-    text-align: center; border: 1px solid rgba(255,255,255,0.12);
-    transition: transform 0.3s;
-  }
-  .proposal-card:hover { transform: translateY(-4px); }
-  .proposal-card .icon { font-size: 2.2rem; margin-bottom: 12px; }
-  .proposal-card h3 { font-size: 1.05rem; color: #f5c842; margin-bottom: 10px; }
-  .proposal-card p { font-size: 0.88rem; opacity: 0.8; line-height: 1.6; text-align: center; }
-
-  /* Closing */
-  .closing-message {
-    font-size: 1.5rem; font-weight: 300; letter-spacing: 0.1em;
-    opacity: 0.9; margin-top: 24px; line-height: 2;
+  .main-subtitle {
+    font-size: 0.95rem;
+    color: #888;
+    margin-bottom: 24px;
     text-align: center;
   }
 
-  /* Navigation */
-  .nav-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    display: flex; justify-content: center; align-items: center; gap: 16px;
-    padding: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
+  .meta-info {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .meta-item { font-size: 0.82rem; color: #666; }
+  .meta-label { color: var(--gold-dark); font-weight: 500; }
+
+  /* Cards */
+  .card {
+    background: #fafafc;
+    border: 1px solid #ece8f0;
+    border-top: 3px solid var(--purple-mid);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    width: 100%;
+    max-width: 700px;
+  }
+  .card-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--purple-mid);
+    margin-bottom: 10px;
+  }
+  .card p, .card li { font-size: 0.82rem; line-height: 1.8; color: #555; }
+  .card ul { padding-left: 18px; }
+  .card ul li { margin-bottom: 4px; }
+
+  .card.c-gold {
+    background: #fdfcf8;
+    border: 1px solid #ede8dc;
+    border-top: 3px solid var(--gold);
+  }
+  .card.c-gold .card-title { color: var(--gold-dark); }
+
+  .card.c-red {
+    background: var(--red-pale);
+    border: 1px solid #f0ddd9;
+    border-top: 3px solid var(--red);
+  }
+  .card.c-red .card-title { color: var(--red-dark); }
+
+  /* Highlights */
+  .highlight {
+    background: var(--purple-pale);
+    border-left: 3px solid var(--purple-mid);
+    padding: 14px 20px;
+    margin-bottom: 14px;
+    width: 100%;
+    max-width: 700px;
+    border-radius: 0 6px 6px 0;
+  }
+  .highlight p { font-size: 0.82rem; line-height: 1.8; color: #555; }
+  .highlight strong { color: var(--purple-deep); }
+
+  .highlight.hl-gold {
+    background: var(--gold-pale);
+    border-left-color: var(--gold);
+  }
+  .highlight.hl-gold strong { color: var(--gold-dark); }
+
+  .highlight.hl-red {
+    background: var(--red-pale);
+    border-left-color: var(--red);
+  }
+  .highlight.hl-red strong { color: var(--red-dark); }
+
+  /* Tags */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .tag {
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .tag.purple {
+    border: 1px solid var(--purple-light);
+    color: var(--purple-mid);
+    background: var(--purple-pale);
+  }
+  .tag.gold {
+    border: 1px solid var(--gold);
+    color: var(--gold-dark);
+    background: var(--gold-pale);
+  }
+
+  /* Table */
+  .table-wrap {
+    width: 100%;
+    max-width: 700px;
+    overflow-x: auto;
+    margin-bottom: 14px;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+  th {
+    background: var(--gold-pale);
+    color: var(--gold-dark);
+    font-weight: 600;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--gold);
+    text-align: left;
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* Grid layout for cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 14px;
+  }
+  .card-grid .card { margin-bottom: 0; }
+
+  /* Number badge */
+  .num-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--purple-mid);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .theme-gold .num-badge { background: var(--gold-dark); }
+  .theme-red .num-badge { background: var(--red); }
+
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .activity-item .card { flex: 1; margin-bottom: 0; }
+
+  /* Nav */
+  .nav {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    gap: 8px;
     z-index: 100;
   }
-  .nav-btn {
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-    color: #fff; padding: 8px 20px; border-radius: 8px; cursor: pointer;
-    font-size: 0.9rem; transition: background 0.2s;
+  .nav button {
+    width: 28px; height: 28px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    color: #999;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
   }
-  .nav-btn:hover { background: rgba(255,255,255,0.2); }
-  .nav-btn:disabled { opacity: 0.3; cursor: default; }
-  .nav-dots {
-    display: flex; gap: 6px;
-  }
-  .nav-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: rgba(255,255,255,0.3); cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
-  }
-  .nav-dot.active { background: #f5c842; transform: scale(1.3); }
-
-  /* Footer */
-  .slide-footer {
-    position: absolute; bottom: 60px; left: 0; right: 0;
-    text-align: center; font-size: 0.75rem; opacity: 0.3;
+  .nav button:hover {
+    border-color: var(--purple-mid);
+    color: var(--purple-mid);
+    background: var(--purple-pale);
   }
 
-  /* Mobile */
+  .page-indicator {
+    position: fixed;
+    bottom: 28px;
+    left: 24px;
+    font-size: 0.7rem;
+    color: #ccc;
+    font-family: 'Cormorant Garamond', serif;
+    z-index: 100;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    color: var(--purple-light);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
   @media (max-width: 768px) {
-    .slide { padding: 40px 24px; }
-    .slide h1 { font-size: 2rem; }
-    .slide h2 { font-size: 1.4rem; }
-    .concept-grid, .proposal-grid { grid-template-columns: 1fr; gap: 12px; }
-    .cast-grid { grid-template-columns: 1fr; gap: 16px; }
-    .ad-layout { flex-direction: column; }
-    .van-visual { width: 100%; }
-    .map-container { flex-direction: column; }
-    .map-stats { width: 100%; }
-    .title-icon { font-size: 3.5rem; }
-    .presented-to { font-size: 0.9rem; padding: 10px 20px; }
+    .slide-header { padding: 32px 24px 0; }
+    .slide-body { padding: 16px 24px 60px; }
+    .slide.title-slide .slide-header { padding: 0 24px; }
+    .main-title { font-size: 1.4rem; }
+    .card-grid { grid-template-columns: 1fr; }
+    .slide-bg-num { font-size: 8rem; right: 20px; }
   }
-
-  /* Map prefecture styles */
-  .pref { fill: #3d2066; stroke: #6b3fa0; stroke-width: 1; transition: fill 0.3s; }
-  .pref.has-osaru { fill: #d4a017; }
-  .pref.has-urakata { fill: #9b59b6; }
-  .pref.has-kousaku { fill: #3498db; }
-  .pref.has-start { fill: #c0392b; }
 </style>
 </head>
 <body>
 
-<div class="slides">
+<div class="slide-container">
 
-  <!-- Slide 1: Title -->
-  <div class="slide theme-purple active" data-slide="0">
-    <div class="title-icon">🚐</div>
-    <h1>冒険プロジェクト</h1>
-    <p class="subtitle">ゆたぼん号で日本全国47都道府県を旅する企画提案</p>
-    <div class="presented-to">presented to <strong>おさるさん</strong></div>
-    <div class="slide-footer">冒険プロジェクト 2026</div>
-  </div>
-
-  <!-- Slide 2: Concept -->
-  <div class="slide theme-purple" data-slide="1">
-    <span class="slide-number">02</span>
-    <h2>企画コンセプト</h2>
-    <div class="concept-grid">
-      <div class="concept-card">
-        <div class="icon">🚐</div>
-        <h3>ゆたぼん号を譲り受ける</h3>
-        <p>ゆたぼんスタディー号を引き継ぎ、沖縄から日本一周の旅へ出発</p>
+  <!-- ========== 紫：タイトル ========== -->
+  <div class="slide title-slide active" data-slide="0">
+    <div class="slide-header">
+      <div style="font-size: 3rem; margin-bottom: 12px;">🚐</div>
+      <div class="section-num">Project Proposal</div>
+      <div class="divider" style="margin-bottom: 24px;"></div>
+      <div class="main-title">冒険プロジェクト</div>
+      <div class="main-subtitle">ゆたぼん号で全国47都道府県を旅する企画提案</div>
+      <div class="meta-info">
+        <span class="meta-item"><span class="meta-label">提案者</span>　ちいくじ</span>
+        <span class="meta-item"><span class="meta-label">宛先</span>　おさるさん</span>
       </div>
-      <div class="concept-card">
-        <div class="icon">🗾</div>
-        <h3>全国47都道府県</h3>
-        <p>各地の仲間に会いに行きながら、日本全国を旅して回る</p>
-      </div>
-      <div class="concept-card">
-        <div class="icon">📢</div>
-        <h3>車体広告で走る</h3>
-        <p>おさるさん・いずみゆうさん等の広告枠を車体に掲載して全国を走行</p>
+      <div class="tags" style="margin-top: 20px;">
+        <span class="tag purple">全国ツアー</span>
+        <span class="tag purple">工作ワークショップ</span>
+        <span class="tag purple">車体広告</span>
+        <span class="tag purple">おさる講座生対談</span>
       </div>
     </div>
-    <div class="slide-footer">冒険プロジェクト 2026</div>
   </div>
 
-  <!-- Slide 3: Cast -->
-  <div class="slide theme-purple" data-slide="2">
-    <span class="slide-number">03</span>
-    <h2>メインキャスト</h2>
-    <div class="cast-grid">
-      <div class="cast-card">
-        <div class="avatar">🧑‍💻</div>
-        <div class="name">ちいくじ（たかひあ）</div>
-        <div class="role">旅をする本人</div>
-        <div class="desc">ゆたぼん号で全国47都道府県を旅しながら、各地のコミュニティメンバーと交流</div>
+  <!-- ========== 紫：ゆたぼん号の背景 ========== -->
+  <div class="slide" data-slide="1">
+    <div class="slide-bg-num">01</div>
+    <div class="slide-header">
+      <div class="section-num">Section 01</div>
+      <div class="slide-title">ゆたぼん号とは</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-body">
+      <div class="highlight">
+        <p>ゆたぼん（ゆたぼんスタディー号）は、不登校の子供たちに勇気を与えるために日本全国を回った。<br>キャッチフレーズは<strong>「人生は冒険だ」</strong>。</p>
       </div>
-      <div class="cast-card">
-        <div class="avatar">👨‍🏫</div>
-        <div class="name">りょうさん（おもち先生）</div>
-        <div class="role">沖縄拠点の協力者</div>
-        <div class="desc">FP・UTAGE構築専門<br>おさる講座生<br>沖縄からの出発をサポート</div>
+      <div class="card">
+        <div class="card-title">ゆたぼんが伝えたメッセージ</div>
+        <ul>
+          <li>「学校に行きたければ行けばいい。行きたくなければ行かなくてもいい」</li>
+          <li>子供たちに新しい世界観を示した</li>
+          <li>当時バッシングされたが、今では人気者に</li>
+          <li><strong>子供たち、そして子供を持つ親に勇気を与えた存在</strong></li>
+        </ul>
+      </div>
+      <div class="highlight">
+        <p>その<strong>ゆたぼん号をちいくじが引き継ぎ</strong>、沖縄から出発して全国47都道府県を旅する。</p>
       </div>
     </div>
-    <div class="slide-footer">冒険プロジェクト 2026</div>
   </div>
 
-  <!-- Slide 4: Ad Model (Gold) -->
+  <!-- ========== 紫：全国でやる3つのこと ========== -->
+  <div class="slide" data-slide="2">
+    <div class="slide-bg-num">02</div>
+    <div class="slide-header">
+      <div class="section-num">Section 02</div>
+      <div class="slide-title">ちいくじが全国でやる3つのこと</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-body">
+      <div class="activity-item">
+        <span class="num-badge">1</span>
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-title">工作ワークショップ（子供向け）</div>
+          <ul>
+            <li>全国の子供たちに工作をやりに会いに行く</li>
+            <li>学校や会場でワークショップを開催</li>
+            <li>工作の認知度UP・ちいくじの露出度UP</li>
+          </ul>
+        </div>
+      </div>
+      <div class="activity-item">
+        <span class="num-badge">2</span>
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-title">SNSマーケティング出張コンサル（大人向け）</div>
+          <ul>
+            <li>会社を辞めたい人・副業したい人にSNSマーケで起業・副業できることを伝える</li>
+            <li>現地で対面・パソコンを触りながら一対一でお話し</li>
+            <li>出張マーケティングコンサルとして全国を回る</li>
+          </ul>
+        </div>
+      </div>
+      <div class="activity-item">
+        <span class="num-badge">3</span>
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-title">おさる講座生との対談（発信）</div>
+          <ul>
+            <li>全国各地のおさる講座生に直接会いに行く</li>
+            <li>対談して成功事例を発信</li>
+            <li>「会社辞めたいけど迷っている人たち」の勇気になるコンテンツに</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 金：車体広告モデル ========== -->
   <div class="slide theme-gold" data-slide="3">
-    <span class="slide-number">04</span>
-    <h2><span class="gold">広告モデル</span></h2>
-    <div class="ad-layout">
-      <div class="van-visual">
-        <div class="van-icon">🚐</div>
-        <div style="font-size:0.8rem; opacity:0.6; margin-top:4px;">ゆたぼん号</div>
-        <div class="ad-labels">
-          <span class="ad-label osaru">おさるさん</span>
-          <span class="ad-label utage">UTAGE</span>
-          <span class="ad-label other">協賛者</span>
-        </div>
+    <div class="slide-bg-num">03</div>
+    <div class="slide-header">
+      <div class="section-num">Section 03</div>
+      <div class="slide-title">車体広告モデル</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-body">
+      <div class="highlight hl-gold">
+        <p>ゆたぼん号の車体に広告枠を設置し、<strong>全国47都道府県を走りながら自然な露出</strong>を実現する。</p>
       </div>
-      <div class="ad-points">
-        <div class="ad-point">
-          <div class="bullet">1</div>
-          <div class="text">車体に<strong>おさるさんの広告枠</strong>を掲載</div>
-        </div>
-        <div class="ad-point">
-          <div class="bullet">2</div>
-          <div class="text"><strong>いずみゆうさん（UTAGE開発者）</strong>の広告枠も併設</div>
-        </div>
-        <div class="ad-point">
-          <div class="bullet">3</div>
-          <div class="text">その他<strong>協賛者の広告枠</strong>も設置可能</div>
-        </div>
-        <div class="ad-point">
-          <div class="bullet">4</div>
-          <div class="text">全国47都道府県を走行 → <strong>各地で自然な露出</strong>が得られる</div>
-        </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>広告枠</th>
+              <th>状況</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>おさるさん</strong></td>
+              <td><span class="tag gold">ご提案中</span></td>
+            </tr>
+            <tr>
+              <td><strong>いずみゆうさん</strong>（UTAGE開発者）</td>
+              <td><span style="color:#27ae60; font-weight:700;">✅ 承認済み</span></td>
+            </tr>
+            <tr>
+              <td>その他協賛者</td>
+              <td>募集中</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card c-gold">
+        <div class="card-title">広告効果</div>
+        <ul>
+          <li>全国47都道府県を走行 → 各地で自然な露出</li>
+          <li>ワークショップ会場・対談先での駐車中も広告効果</li>
+          <li>SNS発信と連動 → オンラインでも拡散</li>
+        </ul>
       </div>
     </div>
-    <div class="slide-footer">冒険プロジェクト 2026</div>
   </div>
 
-  <!-- Slide 5: Network Map (Gold) -->
+  <!-- ========== 金：全国ネットワーク ========== -->
   <div class="slide theme-gold" data-slide="4">
-    <span class="slide-number">05</span>
-    <h2><span class="gold">全国ネットワーク</span></h2>
-    <div class="map-container">
-      <div class="map-svg-wrap">
-        <svg viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg">
-          <!-- Simplified Japan map -->
-          <defs>
-            <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <!-- Background circle -->
-          <circle cx="280" cy="280" r="260" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
-
-          <!-- Hokkaido -->
-          <path class="pref has-kousaku" d="M380,60 L420,40 L460,50 L480,80 L470,120 L440,130 L420,110 L400,120 L380,100 Z" filter="url(#glow)"/>
-          <text x="430" y="85" fill="#fff" font-size="10" text-anchor="middle" opacity="0.7">北海道</text>
-
-          <!-- Tohoku region -->
-          <path class="pref" d="M390,140 L420,135 L430,160 L425,200 L410,220 L390,210 L385,180 Z"/>
-          <text x="408" y="180" fill="#fff" font-size="9" text-anchor="middle" opacity="0.5">東北</text>
-
-          <!-- Kanto region -->
-          <path class="pref has-osaru" d="M370,230 L410,225 L425,245 L420,270 L400,280 L375,275 L365,255 Z"/>
-          <text x="395" y="255" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">関東</text>
-          <!-- Kanagawa dot -->
-          <circle cx="395" cy="270" r="4" fill="#f5c842" opacity="0.9"/>
-          <text x="395" y="285" fill="#f5c842" font-size="7" text-anchor="middle">まーしー</text>
-          <!-- Chiba dot -->
-          <circle cx="415" cy="258" r="3" fill="#9b59b6" opacity="0.9"/>
-
-          <!-- Chubu region -->
-          <path class="pref has-osaru" d="M310,220 L365,215 L370,240 L360,270 L330,280 L305,260 Z"/>
-          <text x="338" y="248" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">中部</text>
-          <!-- Ishikawa -->
-          <circle cx="315" cy="230" r="4" fill="#f5c842" opacity="0.9"/>
-          <text x="315" y="222" fill="#f5c842" font-size="7" text-anchor="middle">まり</text>
-          <!-- Shizuoka -->
-          <circle cx="355" cy="265" r="4" fill="#f5c842" opacity="0.9"/>
-          <text x="355" y="277" fill="#f5c842" font-size="7" text-anchor="middle">銀河</text>
-
-          <!-- Kinki region -->
-          <path class="pref has-osaru" d="M270,270 L320,265 L330,290 L320,320 L285,320 L265,300 Z"/>
-          <text x="298" y="295" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">近畿</text>
-          <!-- Kyoto -->
-          <circle cx="290" cy="280" r="4" fill="#f5c842" opacity="0.9"/>
-          <text x="290" y="273" fill="#f5c842" font-size="7" text-anchor="middle">遊学館</text>
-
-          <!-- Chugoku region -->
-          <path class="pref has-osaru" d="M200,290 L265,285 L270,310 L255,340 L215,340 L195,320 Z"/>
-          <text x="233" y="315" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">中国</text>
-          <!-- Okayama -->
-          <circle cx="245" cy="305" r="4" fill="#f5c842" opacity="0.9"/>
-          <text x="245" y="298" fill="#f5c842" font-size="7" text-anchor="middle">ゆうすけ</text>
-          <!-- Hiroshima -->
-          <circle cx="220" cy="310" r="4" fill="#f5c842" opacity="0.9"/>
-          <text x="220" y="323" fill="#f5c842" font-size="7" text-anchor="middle">碧・なおや</text>
-
-          <!-- Shikoku -->
-          <path class="pref has-kousaku" d="M240,345 L290,340 L300,360 L285,385 L250,385 L235,365 Z"/>
-          <text x="268" y="365" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">四国</text>
-          <circle cx="270" cy="355" r="3" fill="#3498db" opacity="0.9"/>
-
-          <!-- Kyushu -->
-          <path class="pref has-osaru" d="M150,350 L195,345 L205,375 L200,420 L175,435 L145,420 L140,385 Z"/>
-          <text x="173" y="385" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">九州</text>
-          <!-- Miyazaki -->
-          <circle cx="185" cy="400" r="4" fill="#f5c842" opacity="0.9"/>
-          <text x="185" y="413" fill="#f5c842" font-size="7" text-anchor="middle">ここな</text>
-
-          <!-- Okinawa -->
-          <path class="pref has-start" d="M100,470 L140,465 L150,485 L140,510 L110,510 L95,495 Z"/>
-          <text x="122" y="490" fill="#fff" font-size="9" text-anchor="middle" opacity="0.7">沖縄</text>
-          <circle cx="122" cy="500" r="4" fill="#c0392b" opacity="0.9"/>
-          <text x="122" y="513" fill="#ffa" font-size="7" text-anchor="middle">START🚐</text>
-
-          <!-- Route arrows -->
-          <path d="M122,470 C150,440 155,420 170,400" fill="none" stroke="#f5c842" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
-          <path d="M175,380 C190,350 210,330 230,315" fill="none" stroke="#f5c842" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
-          <path d="M245,310 C260,295 275,285 290,278" fill="none" stroke="#f5c842" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
-          <path d="M310,270 C330,260 350,250 370,240" fill="none" stroke="#f5c842" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
-          <path d="M395,245 C405,220 410,190 408,170" fill="none" stroke="#f5c842" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
-          <path d="M420,140 C430,120 440,100 445,80" fill="none" stroke="#f5c842" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
-        </svg>
-        <div class="map-legend">
-          <div class="map-legend-item"><div class="map-legend-dot" style="background:#f5c842"></div>おさる講座生</div>
-          <div class="map-legend-item"><div class="map-legend-dot" style="background:#9b59b6"></div>ウラカタ</div>
-          <div class="map-legend-item"><div class="map-legend-dot" style="background:#3498db"></div>工作</div>
-          <div class="map-legend-item"><div class="map-legend-dot" style="background:#c0392b"></div>出発地</div>
+    <div class="slide-bg-num">04</div>
+    <div class="slide-header">
+      <div class="section-num">Section 03</div>
+      <div class="slide-title">全国ネットワーク</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-body">
+      <div class="card c-gold">
+        <div class="card-title">おさる講座生（9名）</div>
+        <p>まーしー（神奈川）、まり（石川）、銀河（静岡）、遊学館（京都）、ゆうすけ（岡山）、碧（広島）、なおや（広島）、ここな（宮崎）、りょうさん（沖縄）</p>
+      </div>
+      <div class="card-grid">
+        <div class="card c-gold">
+          <div class="card-title">ウラカタマッチングサロン（3名）</div>
+          <p>手塚さん（千葉）、ひろ（石川）、いずみ（福井）</p>
+        </div>
+        <div class="card c-gold">
+          <div class="card-title">工作関連（5名）</div>
+          <p>うさぽん（北海道）、はると（愛知）、りょうや（山口）、ワクワクちゃん（香川）、ゆづき（鹿児島）</p>
         </div>
       </div>
-      <div class="map-stats">
-        <div class="stat-group">
-          <h4>🎓 おさる講座生</h4>
-          <div class="count">9<span>名</span></div>
-          <div class="names">まーしー（神奈川）、まり（石川）、銀河（静岡）、遊学館（京都）、ゆうすけ（岡山）、碧（広島）、なおや（広島）、ここな（宮崎）、りょうさん（沖縄）</div>
-        </div>
-        <div class="stat-group">
-          <h4>🤝 ウラカタマッチングサロン</h4>
-          <div class="count">3<span>名</span></div>
-          <div class="names">手塚さん（千葉）、ひろ（石川）、いずみ（福井）</div>
-        </div>
-        <div class="stat-group">
-          <h4>🔧 工作関連</h4>
-          <div class="count">5<span>名</span></div>
-          <div class="names">うさぽん（北海道）、はると（愛知）、りょうや（山口）、ワクワクちゃん（香川）、ゆづき（鹿児島）</div>
-        </div>
-        <div class="stat-group" style="border: 1px solid rgba(245,200,66,0.4);">
-          <h4>✨ おさるさんへのポイント</h4>
-          <div class="names" style="opacity:0.9; font-size:0.85rem;">おさる講座生に<strong style="color:#f5c842">直接会いに行ける</strong>旅。コミュニティの絆をリアルに深める機会。</div>
-        </div>
+      <div class="highlight hl-gold">
+        <p><strong>おさる講座生に直接会いに行ける旅。</strong>コミュニティの絆をリアルに深める機会になる。</p>
       </div>
     </div>
-    <div class="slide-footer">冒険プロジェクト 2026</div>
   </div>
 
-  <!-- Slide 6: Izumi-yu approval (Gold) -->
-  <div class="slide theme-gold" data-slide="5">
-    <span class="slide-number">06</span>
-    <h2><span class="gold">いずみゆうさん 承認済み</span></h2>
-    <div class="approval-card">
-      <div class="approval-badge">✅ 承認済み</div>
-      <div class="person">いずみゆうさん</div>
-      <div class="role-desc">UTAGE開発者</div>
-      <div class="quote">
-        企画の趣旨にご賛同いただき、<br>
-        広告枠への参加を承認いただいています。<br><br>
-        UTAGEとの連携・広告掲載も可能な状態です。
+  <!-- ========== 赤→金：おさるさんへのメリット ========== -->
+  <div class="slide theme-red" data-slide="5">
+    <div class="slide-bg-num">05</div>
+    <div class="slide-header">
+      <div class="section-num">Section 04</div>
+      <div class="slide-title">おさるさんへのメリット</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-body">
+      <div class="card c-red">
+        <div class="card-title">集客への貢献</div>
+        <ul>
+          <li>副業・起業を目指す人たちに「おさる講座」という選択肢を全国で直接伝えられる</li>
+          <li>おさる講座生との対談コンテンツが新規集客に貢献</li>
+          <li>わずかながらでもおさるさんの集客の力になれる</li>
+        </ul>
+      </div>
+      <div class="card c-red">
+        <div class="card-title">コミュニティ強化</div>
+        <ul>
+          <li>全国の講座生に直接会いに行くことで一体感が生まれる</li>
+          <li>対談動画がコミュニティ全体のモチベーションUPに</li>
+          <li>「おさるさんの講座生がこんなに全国にいる」という可視化</li>
+        </ul>
+      </div>
+      <div class="card c-red">
+        <div class="card-title">広告効果</div>
+        <ul>
+          <li>車体広告が全国を走り、自然な形でおさるさんの認知を広げる</li>
+          <li>いずみゆうさん（UTAGE）と並んで掲載 → 相乗効果</li>
+        </ul>
       </div>
     </div>
-    <p style="margin-top:24px; font-size:0.95rem; opacity:0.7;">
-      → おさるさんの広告と並んで掲載されることで<br>
-      <span class="gold" style="font-weight:600;">相乗効果のある露出</span>が期待できます
-    </p>
-    <div class="slide-footer">冒険プロジェクト 2026</div>
   </div>
 
-  <!-- Slide 7: Proposal (Red→Gold) -->
-  <div class="slide theme-red" data-slide="6">
-    <span class="slide-number">07</span>
-    <h2>おさるさんへの<span class="gold">ご提案</span></h2>
-    <div class="proposal-grid">
-      <div class="proposal-card">
-        <div class="icon">📢</div>
-        <h3>広告枠への参加</h3>
-        <p>ゆたぼん号の車体におさるさんの広告を掲載。全国47都道府県で自然な露出を実現</p>
+  <!-- ========== 紫：クロージング ========== -->
+  <div class="slide" data-slide="6">
+    <div class="slide-bg-num">06</div>
+    <div class="slide-header">
+      <div class="section-num">Closing</div>
+      <div class="slide-title">ご提案</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-body">
+      <div class="highlight">
+        <p><strong>いずみゆうさんは承認済み。</strong><br>おさるさんのご参加で企画が完成します。</p>
       </div>
-      <div class="proposal-card">
-        <div class="icon">🤝</div>
-        <h3>講座生との直接交流</h3>
-        <p>全国各地のおさる講座生に直接会いに行く旅。リアルな交流の場を提供</p>
+      <div class="card">
+        <div class="card-title">お願いしたいこと</div>
+        <ul>
+          <li>ゆたぼん号の車体への<strong>広告枠掲載</strong>のご承認</li>
+          <li>おさる講座生との対談・交流への<strong>ご協力</strong></li>
+        </ul>
       </div>
-      <div class="proposal-card">
-        <div class="icon">💫</div>
-        <h3>コミュニティの絆</h3>
-        <p>旅を通じてコミュニティの一体感を深め、メンバー同士のつながりを強化</p>
+      <div style="text-align:center; margin-top:24px; color:#888; font-size:0.9rem; line-height:2;">
+        ご検討のほど<br>よろしくお願いいたします<br><br>
+        <span style="color:var(--purple-mid); font-weight:600;">ちいくじ</span>
       </div>
     </div>
-    <p style="margin-top:28px; font-size:1.1rem;">
-      <span class="gold" style="font-weight:600;">いずみゆうさんも承認済み</span> — おさるさんのご参加で企画が完成します
-    </p>
-    <div class="slide-footer">冒険プロジェクト 2026</div>
-  </div>
-
-  <!-- Slide 8: Closing -->
-  <div class="slide theme-closing" data-slide="7">
-    <div class="title-icon">🚐</div>
-    <h1 style="font-size:2.2rem;">冒険プロジェクト</h1>
-    <div class="closing-message">
-      ご検討のほど<br>
-      よろしくお願いいたします
-    </div>
-    <div style="margin-top:40px; opacity:0.5; font-size:0.9rem;">
-      ちいくじ（たかひあ）
-    </div>
-    <div class="slide-footer">冒険プロジェクト 2026</div>
   </div>
 
 </div>
 
-<!-- Navigation -->
-<div class="nav-bar">
-  <button class="nav-btn" id="prev-btn" onclick="prevSlide()">◀ 前へ</button>
-  <div class="nav-dots" id="nav-dots"></div>
-  <button class="nav-btn" id="next-btn" onclick="nextSlide()">次へ ▶</button>
+<!-- ナビゲーション -->
+<div class="nav">
+  <button onclick="changeSlide(-1)">&#9664;</button>
+  <button onclick="changeSlide(1)">&#9654;</button>
+</div>
+<div class="page-indicator" id="pageIndicator">1 / 7</div>
+<div class="footer">
+  🚐 冒険プロジェクト 2026
 </div>
 
 <script>
-const slides = document.querySelectorAll('.slide');
-const totalSlides = slides.length;
-let current = 0;
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
 
-// Create dots
-const dotsContainer = document.getElementById('nav-dots');
-for (let i = 0; i < totalSlides; i++) {
-  const dot = document.createElement('div');
-  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
-  dot.onclick = () => goToSlide(i);
-  dotsContainer.appendChild(dot);
-}
+  function showSlide(index) {
+    slides.forEach((s, i) => { s.classList.toggle('active', i === index); });
+    document.getElementById('pageIndicator').textContent = (index + 1) + ' / ' + totalSlides;
+  }
 
-function goToSlide(n) {
-  slides[current].classList.remove('active');
-  dotsContainer.children[current].classList.remove('active');
-  current = n;
-  slides[current].classList.add('active');
-  dotsContainer.children[current].classList.add('active');
-  document.getElementById('prev-btn').disabled = current === 0;
-  document.getElementById('next-btn').disabled = current === totalSlides - 1;
-}
+  function changeSlide(dir) {
+    currentSlide = Math.max(0, Math.min(totalSlides - 1, currentSlide + dir));
+    showSlide(currentSlide);
+  }
 
-function nextSlide() { if (current < totalSlides - 1) goToSlide(current + 1); }
-function prevSlide() { if (current > 0) goToSlide(current - 1); }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+  });
 
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
-});
-
-// Touch swipe
-let touchStartX = 0;
-document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
-document.addEventListener('touchend', (e) => {
-  const diff = touchStartX - e.changedTouches[0].clientX;
-  if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
-});
-
-// Initial state
-document.getElementById('prev-btn').disabled = true;
+  let touchStartX = 0;
+  document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; });
+  document.addEventListener('touchend', function(e) {
+    const diff = touchStartX - e.changedTouches[0].screenX;
+    if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+  });
 </script>
 
 </body>
